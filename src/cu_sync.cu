@@ -9,7 +9,7 @@
 */
 void cu_sync_device()
 {
-	  gpuErrchk(cudaDeviceSynchronize());
+    gpuErrchk(cudaDeviceSynchronize());
     return;
 }
 
@@ -20,6 +20,6 @@ void cu_sync_device()
 */
 void cu_sync_stream(cudaStream_t *stream)
 {
-	  gpuErrchk(cudaStreamSynchronize(*stream));
+    gpuErrchk(cudaStreamSynchronize(*stream));
     return;
 }

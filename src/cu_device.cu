@@ -21,6 +21,6 @@ int cu_device_count()
 
 void cu_device_reset()
 {
-	  gpuErrchk(cudaDeviceReset());
+    gpuErrchk(cudaDeviceReset());
     return;
 }

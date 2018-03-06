@@ -21,6 +21,7 @@ __all__ = [
     "cu_memcpy_d2h_async",
     "cu_memcpy_h2d",
     "cu_memcpy_h2d_async",
+    "cu_memcpy_3d",
     "cu_memcpy_3d_async",
     "cu_mempin",
     "cu_memunpin",
@@ -114,10 +115,15 @@ argtype_defs = {
                                  c_size_t,          #Size in bytes
                                  c_void_p],         #Pointer to CUDA stream
 
+    "cu_memcpy_3d" :             [ndpointer(),      #Pointer to host dst array
+                                 c_void_p,          #Pointer to device src array
+                                 ndpointer("i4"),   #Dim3 extent
+                                 c_int],            #Element size in bytes
+
     "cu_memcpy_3d_async" :      [ndpointer(),       #Pointer to host dst array
                                  c_void_p,          #Pointer to device src array
-                                 ndpointer("i4"),
-                                 c_int,
+                                 ndpointer("i4"),   #Dim3 extent
+                                 c_int,             #Element size in bytes
                                  c_void_p],         #Pointer to CUDA stream
    
     "cu_mempin" :               [c_void_p,          #Pointer to host array

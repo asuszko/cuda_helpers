@@ -7,10 +7,8 @@ to 4 components, addressed by x,y,x,w. */
 cudaChannelFormatDesc cu_create_channel_char(int ncomponents,
                                              bool is_unsigned)
 {
-
     cudaChannelFormatDesc channelDescData;
     if(is_unsigned) {
-
         switch(ncomponents) {
             case 1: {
                 channelDescData = cudaCreateChannelDesc<unsigned char>();
@@ -34,7 +32,6 @@ cudaChannelFormatDesc cu_create_channel_char(int ncomponents,
         }
     }
     else {
-
         switch(ncomponents) {
             case 1: {
                 channelDescData = cudaCreateChannelDesc<char>();
@@ -57,7 +54,6 @@ cudaChannelFormatDesc cu_create_channel_char(int ncomponents,
             }
         }
     }
-
     return channelDescData;
 }
 
@@ -65,10 +61,8 @@ cudaChannelFormatDesc cu_create_channel_char(int ncomponents,
 cudaChannelFormatDesc cu_create_channel_short(int ncomponents,
                                               bool is_unsigned)
 {
-
     cudaChannelFormatDesc channelDescData;
     if(is_unsigned) {
-
         switch(ncomponents) {
             case 1: {
                 channelDescData = cudaCreateChannelDesc<unsigned short>();
@@ -92,7 +86,6 @@ cudaChannelFormatDesc cu_create_channel_short(int ncomponents,
         }
     }
     else {
-
         switch(ncomponents) {
             case 1: {
                 channelDescData = cudaCreateChannelDesc<short>();
@@ -115,14 +108,12 @@ cudaChannelFormatDesc cu_create_channel_short(int ncomponents,
             }
         }
     }
-
     return channelDescData;
 }
 
 
 cudaChannelFormatDesc cu_create_channel_half()
 {
-
     cudaChannelFormatDesc channelDescData;
     channelDescData = cudaCreateChannelDescHalf();
     return channelDescData;
@@ -131,9 +122,7 @@ cudaChannelFormatDesc cu_create_channel_half()
 
 cudaChannelFormatDesc cu_create_channel_float(int ncomponents)
 {
-
     cudaChannelFormatDesc channelDescData;
-
     switch(ncomponents) {
         case 1: {
             channelDescData = cudaCreateChannelDesc<float>();
@@ -155,6 +144,5 @@ cudaChannelFormatDesc cu_create_channel_float(int ncomponents)
             break;
         }
     }
-
     return channelDescData;
 }

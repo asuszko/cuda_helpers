@@ -12,8 +12,8 @@ extern "C" {
     void DLL_EXPORT *cu_malloc(size_t size);
 
     cudaArray DLL_EXPORT *cu_malloc_3d(cudaChannelFormatDesc *channel,
-              											   dim3 extent,
-              											   bool layered);
+                                       dim3 extent,
+                                       bool layered);
 
     void DLL_EXPORT *cu_malloc_managed(size_t size);
 
