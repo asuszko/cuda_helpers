@@ -6,8 +6,8 @@
 
 /**
  *  Initialize a CUDA context on a device.
- *  @param device - [int] - CUDA device
- *  @return ctx - [CUcontext*] - new floating CUDA context handle
+ *  @param device - [int] : CUDA device.
+ *  @return ctx - [CUcontext*] : New floating CUDA context handle.
  */
 CUcontext *cu_context_create(int device)
 {
@@ -24,7 +24,10 @@ CUcontext *cu_context_create(int device)
     return ctx;
 }
 
-
+/**
+ *  Push a CUDA context to the current thread stack.
+ *  @param ctx - [CUcontext*] : Floating CUDA context handle.
+ */
 void cu_context_push(CUcontext *ctx)
 {
     /* Pop the existing context if it exists, then push the new one,
@@ -38,17 +41,19 @@ void cu_context_push(CUcontext *ctx)
     return;
 }
 
-
+/**
+ *  Pop a CUDA context from the current thread stack.
+ *  @param ctx - [CUcontext*] : Floating CUDA context handle.
+ */
 void cu_context_pop(CUcontext *ctx)
 {
     gpuContextErrchk(cuCtxPopCurrent(ctx));
     return;
 }
 
-
 /**
  *  Destroy a CUDA context, implicitly freeing all resources associated with it.
- *  @param ctx - [CUcontext*] - CUDA context handle
+ *  @param ctx - [CUcontext*] : Floating CUDA context handle.
  */
 void cu_context_destroy(CUcontext *ctx)
 {

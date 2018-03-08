@@ -3,6 +3,12 @@
 #include "cu_memcpy.h"
 
 
+/**
+*  Copy a chunk of memory from the host to device.
+*  @param d_arr - [void*] : Pointer to device memory.
+*  @param h_arr - [void*] : Pointer to host memory.
+*  @param size - [size_t] : Size of the transfer in bytes.
+*/
 void cu_memcpy_h2d(void *d_arr,
                    void *h_arr,
                    size_t size)
@@ -11,7 +17,13 @@ void cu_memcpy_h2d(void *d_arr,
     return;
 }
 
-
+/**
+*  Async Copy a chunk of memory from the host to device.
+*  @param d_arr - [void*] : Pointer to device memory.
+*  @param h_arr - [void*] : Pointer to host memory.
+*  @param size - [size_t] : Size of the transfer in bytes.
+*  @param stream - [cudaStream_t*] : CUDA stream
+*/
 void cu_memcpy_h2d_async(void *d_arr,
                          void *h_arr,
                          size_t size,
@@ -21,7 +33,12 @@ void cu_memcpy_h2d_async(void *d_arr,
     return;
 }
 
-
+/**
+*  Copy a chunk of memory from the device to host.
+*  @param d_arr - [void*] : Pointer to device memory.
+*  @param h_arr - [void*] : Pointer to host memory.
+*  @param size - [size_t] : Size of the transfer in bytes.
+*/
 void cu_memcpy_d2h(void *d_arr,
                    void *h_arr,
                    size_t size)
@@ -30,7 +47,13 @@ void cu_memcpy_d2h(void *d_arr,
     return;
 }
 
-
+/**
+*  Async copy a chunk of memory from the device to host.
+*  @param d_arr - [void*] : Pointer to device memory.
+*  @param h_arr - [void*] : Pointer to host memory.
+*  @param size - [size_t] : Size of the transfer in bytes.
+*  @param stream - [cudaStream_t*] : CUDA stream
+*/
 void cu_memcpy_d2h_async(void *d_arr,
                          void *h_arr,
                          size_t size,
@@ -40,7 +63,14 @@ void cu_memcpy_d2h_async(void *d_arr,
     return;
 }
 
-
+/**
+*  Copy a chunk of memory from the device to device. This copy can be 
+*  from one device to another, or to another memory space on the same
+*  device.
+*  @param d_arr_src - [void*] : Pointer to device source memory.
+*  @param d_arr_dst - [void*] : Pointer to device destination memory.
+*  @param size - [size_t] : Size of the transfer in bytes.
+*/
 void cu_memcpy_d2d(void *d_arr_src,
                    void *d_arr_dst,
                    size_t size)
@@ -49,7 +79,15 @@ void cu_memcpy_d2d(void *d_arr_src,
     return;
 }
 
-
+/**
+*  Async copy a chunk of memory from the device to device. This copy can
+*  be from one device to another, or to another memory space on the same
+*  device.
+*  @param d_arr_src - [void*] : Pointer to device source memory.
+*  @param d_arr_dst - [void*] : Pointer to device destination memory.
+*  @param size - [size_t] : Size of the transfer in bytes.
+*  @param stream - [cudaStream_t*] : CUDA stream
+*/
 void cu_memcpy_d2d_async(void *d_arr_src,
                          void *d_arr_dst,
                          size_t size,
@@ -59,7 +97,12 @@ void cu_memcpy_d2d_async(void *d_arr_src,
     return;
 }
 
-
+/**
+*  Set the byte value of the memory on the device.
+*  @param d_arr - [void*] : Pointer to device memory.
+*  @param value - [int] : Value to set.
+*  @param size - [size_t] : Size in bytes to set.
+*/
 void cu_memset(void *d_arr,
                int value,
                size_t size)
@@ -68,7 +111,13 @@ void cu_memset(void *d_arr,
     return;
 }
 
-
+/**
+*  Async set the byte value of the memory on the device.
+*  @param d_arr - [void*] : Pointer to device memory.
+*  @param value - [int] : Value to set.
+*  @param size - [size_t] : Size in bytes to set.
+*  @param stream - [cudaStream_t*] : CUDA stream
+*/
 void cu_memset_async(void *d_arr,
                      int value,
                      size_t size,
@@ -78,7 +127,11 @@ void cu_memset_async(void *d_arr,
     return;
 }
 
-
+/**
+*  Pin host memory space so that it works with CUDA streams.
+*  @param h_arr - [void*] : Pointer to host memory.
+*  @param size - [size_t] : Size in bytes to pin.
+*/
 void cu_mempin(void *h_arr, size_t size)
 {
     /* Check if array is already pinned. */
@@ -93,7 +146,10 @@ void cu_mempin(void *h_arr, size_t size)
     return;
 }
 
-
+/**
+*  Unpin host memory space.
+*  @param h_arr - [void*] : Pointer to host memory.
+*/
 void cu_memunpin(void *h_arr)
 {
     /* Check if array is pinned. */
@@ -110,9 +166,16 @@ void cu_memunpin(void *h_arr)
     return;
 }
 
-
-cudaMemcpy3DParms cu_copyparams(void* src_Array,
-                                cudaArray* dst_Array,
+/**
+*  Create and return the copyparms3D object that is used by a 
+*  subsequent cudaMemcpy3D call.
+*  @param src_Array - [void*] : Pointer to host memory.
+*  @param dst_Array - [cudaArray*] : Pointer to device cudaArray.
+*  @param extent - [cudaExtent] : Dimensions of 3D memory [width,height,depth].
+*  @param element_size_bytes [unsigned int] : Size of each element in bytes.
+*/
+cudaMemcpy3DParms cu_copyparams(void *src_Array,
+                                cudaArray *dst_Array,
                                 cudaExtent extent,
                                 unsigned int element_size_bytes)
 {
@@ -131,7 +194,13 @@ cudaMemcpy3DParms cu_copyparams(void* src_Array,
     return copyParams;
 }
 
-
+/**
+*  Copy a host array to a 3D cudaArray.
+*  @param src_Array - [void*] : Pointer to host memory.
+*  @param dst_Array - [cudaArray*] : Pointer to device cudaArray.
+*  @param extent - [dim3] : Dimensions of 3D memory [x,y,z].
+*  @param element_size_bytes [unsigned int] : Size of each element in bytes.
+*/
 void cu_memcpy_3d(void *src_Array,
                   cudaArray *dst_Array,
                   dim3 extent,
@@ -154,7 +223,14 @@ void cu_memcpy_3d(void *src_Array,
     return;
 }
 
-
+/**
+*  Async Copy a host array to a 3D cudaArray.
+*  @param src_Array - [void*] : Pointer to host memory.
+*  @param dst_Array - [cudaArray*] : Pointer to device cudaArray.
+*  @param extent - [dim3] : Dimensions of 3D memory [x,y,z].
+*  @param element_size_bytes [unsigned int] : Size of each element in bytes.
+*  @param stream - [cudaStream_t*] : CUDA stream
+*/
 void cu_memcpy_3d_async(void *src_Array,
                         cudaArray *dst_Array,
                         dim3 extent,

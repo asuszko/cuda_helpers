@@ -2,7 +2,11 @@
 #include "cu_errchk.h"
 #include "cu_device.h"
 
-
+/**
+*  Get the cudaGetDeviceProperties object.
+*  @param device - [int] : Device id to query.
+*  @return props - [cudaDeviceProp] : cudaDeviceProp object.
+*/
 cudaDeviceProp cu_device_props(int device)
 {
     cudaDeviceProp props;
@@ -10,7 +14,10 @@ cudaDeviceProp cu_device_props(int device)
     return props;
 }
 
-
+/**
+*  Get the number of CUDA devices.
+*  @return count - [int] : Number of CUDA devices.
+*/
 int cu_device_count()
 {
     int count;
@@ -18,7 +25,9 @@ int cu_device_count()
     return count;
 }
 
-
+/**
+*  Reset the device on the current CUDA context.
+*/
 void cu_device_reset()
 {
     gpuErrchk(cudaDeviceReset());

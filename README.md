@@ -1,1 +1,3 @@
 # cuda_helpers
+
+Submodule of a Python framework that allows a user to **GPU accelerate their Python code**. An object is created that handles the interface between Python and the GPU. This object is part of a larger container within the [cuda_manager](https://github.com/asuszko/cuda_manager). Thus, while this repo may be used standalone, it is recommended it be downloaded with [cuda_manager](https://github.com/asuszko/cuda_manager). Doing a recursive clone on [cuda_manager](https://github.com/asuszko/cuda_manager) will also clone [cuda_helpers](https://github.com/asuszko/cuda_helpers).

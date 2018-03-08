@@ -1,4 +1,10 @@
-from ctypes import c_char, c_int, c_size_t, c_void_p, Structure
+# -*- coding: utf-8 -*-
+
+from ctypes import (c_char,
+                    c_int,
+                    c_void_p,
+                    c_size_t,
+                    Structure)
 
 
 #CUDA texture descriptor object

@@ -2,8 +2,14 @@
 #include "cu_errchk.h"
 #include "cu_channel.h"
 
-/* CUDA has built-in support for vector types: multi-dimensional data with 1
-to 4 components, addressed by x,y,x,w. */
+/**
+*  Create a char cudaChannelFormatDesc object. CUDA has built-in support 
+*  for vector types: multi-dimensional data with 1 to 4 components, 
+*  addressed by x,y,x,w.
+*  @param ncomponents - [int] : Number of components in the channel.
+*  @param is_unsigned - [bool] : Unsigned flag.
+*  @return channelDescData - [cudaChannelFormatDesc] : char cudaChannelFormatDesc object.
+*/
 cudaChannelFormatDesc cu_create_channel_char(int ncomponents,
                                              bool is_unsigned)
 {
@@ -57,7 +63,14 @@ cudaChannelFormatDesc cu_create_channel_char(int ncomponents,
     return channelDescData;
 }
 
-
+/**
+*  Create a short cudaChannelFormatDesc object. CUDA has built-in support 
+*  for vector types: multi-dimensional data with 1 to 4 components, 
+*  addressed by x,y,x,w.
+*  @param ncomponents - [int] : Number of components in the channel.
+*  @param is_unsigned - [bool] : Unsigned flag.
+*  @return channelDescData - [cudaChannelFormatDesc] : short cudaChannelFormatDesc object.
+*/
 cudaChannelFormatDesc cu_create_channel_short(int ncomponents,
                                               bool is_unsigned)
 {
@@ -111,7 +124,12 @@ cudaChannelFormatDesc cu_create_channel_short(int ncomponents,
     return channelDescData;
 }
 
-
+/**
+*  Create a half cudaChannelFormatDesc object. CUDA has built-in support 
+*  for vector types: multi-dimensional data with 1 to 4 components, 
+*  addressed by x,y,x,w.
+*  @return channelDescData - [cudaChannelFormatDesc] : half cudaChannelFormatDesc object.
+*/
 cudaChannelFormatDesc cu_create_channel_half()
 {
     cudaChannelFormatDesc channelDescData;
@@ -119,7 +137,13 @@ cudaChannelFormatDesc cu_create_channel_half()
     return channelDescData;
 }
 
-
+/**
+*  Create a float cudaChannelFormatDesc object. CUDA has built-in support 
+*  for vector types: multi-dimensional data with 1 to 4 components, 
+*  addressed by x,y,x,w.
+*  @param ncomponents - [int] : Number of components in the channel.
+*  @return channelDescData - [cudaChannelFormatDesc] : float cudaChannelFormatDesc object.
+*/
 cudaChannelFormatDesc cu_create_channel_float(int ncomponents)
 {
     cudaChannelFormatDesc channelDescData;
