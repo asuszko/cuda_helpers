@@ -12,6 +12,7 @@ __all__ = [
     "cu_device_count",
     "cu_device_props",
     "cu_device_reset",
+    "cu_get_mem_info",
     "cu_malloc",
     "cu_malloc_3d",
     "cu_malloc_managed",
@@ -79,6 +80,9 @@ argtype_defs = {
     "cu_device_props" :         [c_int],            #CUDA device id
     
     "cu_device_reset" :         [],
+    
+    "cu_get_mem_info" :         [ndpointer(),       #Free memory in bytes
+                                 ndpointer()],      #Total memory in bytes
                             
     "cu_malloc" :               [c_size_t],         #Size in bytes
     

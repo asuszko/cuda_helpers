@@ -14,6 +14,8 @@ extern "C" {
     int DLL_EXPORT cu_device_count();
 
     void DLL_EXPORT cu_device_reset();
+    
+    void DLL_EXPORT cu_get_mem_info(size_t *free, size_t *total);
 
 }
 

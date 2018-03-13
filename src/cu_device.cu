@@ -33,3 +33,12 @@ void cu_device_reset()
     gpuErrchk(cudaDeviceReset());
     return;
 }
+
+/**
+* Get memory info of the device.
+*/
+void cu_get_mem_info(size_t *free, size_t *total)
+{
+    gpuErrchk(cudaMemGetInfo(free, total));
+    return;	
+}
