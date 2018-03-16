@@ -35,7 +35,6 @@ __all__ = [
 ]
 
 import os
-import sys
 from numpy.ctypeslib import ndpointer
 from ctypes import (c_bool,
                     c_int,
@@ -47,8 +46,7 @@ from ctypes import (c_bool,
 from cuda_structs import channelDesc, deviceProps
 
 # Load the shared library
-sys.path.append("..")
-from shared_utils.load_lib import load_lib
+from shared_utils import load_lib
 lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "lib"))
 cu_lib = load_lib(lib_path,"cuda")
 
