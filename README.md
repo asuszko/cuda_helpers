@@ -1,13 +1,13 @@
-# cuda_helpers
+f# cuda_helpers
 
-Submodule of a Python framework that allows a user to **GPU accelerate their Python code**. An object is created that handles the interface between Python and the GPU. This object is part of a larger container within the [pycu_interface](https://github.com/asuszko/pycu_interace). Thus, while this repo may be used standalone, it is recommended it be downloaded with [pycu_interface](https://github.com/asuszko/pycu_interace). Doing a recursive clone on [pycu_interface](https://github.com/asuszko/pycu_interace) will also clone [cuda_helpers](https://github.com/asuszko/cuda_helpers).
+Submodule of a Python framework that allows a user to **GPU accelerate their Python code**. An object is created that handles the interface between Python and the GPU. This object is part of a larger container within the [pycu_interface](https://github.com/asuszko/pycu_interface). Thus, while this repo may be used standalone, it is recommended it be downloaded with [pycu_interface](https://github.com/asuszko/pycu_interface). Doing a recursive clone on [pycu_interface](https://github.com/asuszko/pycu_interface) will also clone [cuda_helpers](https://github.com/asuszko/cuda_helpers).
 
 ## Setup
 
 To compile the shared library, run the **setup.py** file found in the root folder from the command line, with optional argument(s) -arch, and -cc_bin if on Windows. On Windows, the NVCC compiler looks for cl.exe to compile the C/C++, which comes with Visual Studio. On Linux, it uses the built in GCC compiler. An example of a command line run to compile the code is given below:
 > python setup.py -arch=sm_50 -cc_bin="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin"
 
-If you are unable to compile, you may [download precompiled libraries here](https://github.com/asuszko/pycu_interace_libs).
+If you are unable to compile, you may [download precompiled libraries here](https://github.com/asuszko/pycu_interface_libs).
 
 ## Compiler Requirements
 
