@@ -31,7 +31,8 @@ __all__ = [
     "cu_stream_create",
     "cu_stream_destroy",
     "cu_sync_device",
-    "cu_sync_stream",    
+    "cu_sync_stream",
+    "cu_transpose",
 ]
 
 import os
@@ -148,7 +149,13 @@ argtype_defs = {
     
     "cu_sync_device" :          [],
 
-    "cu_sync_stream" :          [c_void_p],         #Pointer to CUDA stream       
+    "cu_sync_stream" :          [c_void_p],         #Pointer to CUDA stream 
+
+    "cu_transpose" :            [c_void_p,          #Pointer to device array
+                                 c_int,             #Nrows
+                                 c_int,             #Ncols
+                                 c_int,             #Data type identifier
+                                 c_void_p],         #Pointer to CUDA stream   
     
 }
 
