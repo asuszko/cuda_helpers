@@ -13,6 +13,10 @@ __all__ = [
     "cu_device_props",
     "cu_device_reset",
     "cu_get_mem_info",
+    "cu_iadd",
+    "cu_idiv",
+    "cu_imul",
+    "cu_isub",
     "cu_malloc",
     "cu_malloc_3d",
     "cu_malloc_managed",
@@ -55,6 +59,34 @@ cu_lib = load_lib(lib_path,"cuda")
 # Define argtypes for all functions to import
 argtype_defs = {
 
+    "cu_iadd" :                  [c_void_p,         #Vector y to add onto
+                                  c_void_p,         #Vector x to add
+                                  c_int,            #Length of vector y
+                                  c_int,            #Data type identifier     
+                                  c_int,            #Data type depth
+                                  c_bool],          #Vector flag
+
+    "cu_idiv" :                  [c_void_p,         #Vector y to divide onto
+                                  c_void_p,         #Vector x to divide
+                                  c_int,            #Length of vector y
+                                  c_int,            #Data type identifier     
+                                  c_int,            #Data type depth
+                                  c_bool],          #Vector flag
+
+    "cu_imul" :                  [c_void_p,         #Vector y to multiply onto
+                                  c_void_p,         #Vector x to multiply
+                                  c_int,            #Length of vector y
+                                  c_int,            #Data type identifier     
+                                  c_int,            #Data type depth
+                                  c_bool],          #Vector flag
+
+    "cu_isub" :                  [c_void_p,         #Vector y to subtract onto
+                                  c_void_p,         #Vector x to subtract
+                                  c_int,            #Length of vector y
+                                  c_int,            #Data type identifier     
+                                  c_int,            #Data type depth
+                                  c_bool],          #Vector flag
+        
     "cu_context_create" :       [c_int],            #CUDA device id
       
     "cu_context_destroy" :      [c_void_p],         #Pointer to CUDA ctx
