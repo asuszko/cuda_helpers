@@ -74,25 +74,25 @@ void cu_idiv(void *y, void *x, unsigned long long N,
         case 0:
             switch(dtype_len) {
                 case 1:
-				         if (vec) div1_vec<<<gridSize,blockSize,0,stream_id>>>((float*)y, (const float*)x, N);
-				         else     div1_val<<<gridSize,blockSize,0,stream_id>>>((float*)y, (const float*)x, N);
-				         break;
+                    if (vec) div1_vec<<<gridSize,blockSize,0,stream_id>>>((float*)y, (const float*)x, N);
+                    else     div1_val<<<gridSize,blockSize,0,stream_id>>>((float*)y, (const float*)x, N);
+                    break;
                 case 2:
-				         if (vec) div2_vec<<<gridSize,blockSize,0,stream_id>>>((float2*)y,(const float2*)x,N);
-				         else     div2_val<<<gridSize,blockSize,0,stream_id>>>((float2*)y,(const float2*)x,N);
-				         break;
+                    if (vec) div2_vec<<<gridSize,blockSize,0,stream_id>>>((float2*)y,(const float2*)x,N);
+                    else     div2_val<<<gridSize,blockSize,0,stream_id>>>((float2*)y,(const float2*)x,N);
+                    break;
             }
             break;
         case 1:
             switch(dtype_len) {
                 case 1:
-				         if (vec) div1_vec<<<gridSize,blockSize,0,stream_id>>>((double*)y, (const double*)x, N);
-				         else     div1_val<<<gridSize,blockSize,0,stream_id>>>((double*)y, (const double*)x, N);
-				         break;
+                    if (vec) div1_vec<<<gridSize,blockSize,0,stream_id>>>((double*)y, (const double*)x, N);
+                    else     div1_val<<<gridSize,blockSize,0,stream_id>>>((double*)y, (const double*)x, N);
+                    break;
                 case 2:
-				         if (vec) div2_vec<<<gridSize,blockSize,0,stream_id>>>((double2*)y,(const double2*)x,N);
-				         else     div2_val<<<gridSize,blockSize,0,stream_id>>>((double2*)y,(const double2*)x,N);
-				         break;
+                    if (vec) div2_vec<<<gridSize,blockSize,0,stream_id>>>((double2*)y,(const double2*)x,N);
+                    else     div2_val<<<gridSize,blockSize,0,stream_id>>>((double2*)y,(const double2*)x,N);
+                    break;
             }
             break;
     }
