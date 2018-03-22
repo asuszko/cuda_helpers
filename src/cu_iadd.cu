@@ -1,5 +1,4 @@
 #include <cuda.h>
-#include <tuple>
 
 #include "cu_iadd.h"
 #include "cu_errchk.h"
@@ -146,7 +145,7 @@ __global__ void add4_vec(T *y, const T *x, unsigned long long N)
 
 void cu_iadd(void *y, void *x, unsigned long long N,
              const int dtype, int dtype_len, bool vec,
-			     cudaStream_t *stream)
+             cudaStream_t *stream)
 {
     dim3 blockSize(256);
     dim3 gridSize((((N-1)/blockSize.x+1)-1)/blockSize.x+1);
@@ -157,7 +156,7 @@ void cu_iadd(void *y, void *x, unsigned long long N,
     switch(dtype) {
         case 0:
             switch(dtype_len) {
-				     case 1:
+                case 1:
 				         if (vec) add1_vec<<<gridSize,blockSize,0,stream_id>>>((float*)y, (const float*)x, N);
 				         else     add1_val<<<gridSize,blockSize,0,stream_id>>>((float*)y, (const float*)x, N);
 				         break;
@@ -173,11 +172,11 @@ void cu_iadd(void *y, void *x, unsigned long long N,
 				         if (vec) add4_vec<<<gridSize,blockSize,0,stream_id>>>((float4*)y,(const float4*)x,N);
 				         else     add4_val<<<gridSize,blockSize,0,stream_id>>>((float4*)y,(const float4*)x,N);
 				         break;
-        }
+            }
             break;
         case 1:
             switch(dtype_len) {
-				     case 1:
+                case 1:
 				         if (vec) add1_vec<<<gridSize,blockSize,0,stream_id>>>((double*)y, (const double*)x, N);
 				         else     add1_val<<<gridSize,blockSize,0,stream_id>>>((double*)y, (const double*)x, N);
 				         break;
