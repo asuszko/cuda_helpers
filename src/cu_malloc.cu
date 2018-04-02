@@ -9,18 +9,18 @@
 */
 void *cu_malloc(size_t size)
 {
-    void* d_arr;
+    void *d_arr;
     gpuErrchk(cudaMalloc((void **)&d_arr, size));
     return d_arr;
 }
 
 
 /**
-*  Allocate mananged memory on the host and device. CUDA will link 
-*  host and device memory to the same pointer. Thus, this pointer can 
-*  be accessed from either. Updating values within the array on either 
+*  Allocate mananged memory on the host and device. CUDA will link
+*  host and device memory to the same pointer. Thus, this pointer can
+*  be accessed from either. Updating values within the array on either
 *  the host or device will result in an automatic update of the other.
-*  Using managed memory removes the need to explicity call h2d or d2h 
+*  Using managed memory removes the need to explicity call h2d or d2h
 *  memory transfers, albeit at the cost of performance.
 *  @param size - [size_t] : Size to allocate in bytes.
 */
@@ -54,4 +54,12 @@ cudaArray *cu_malloc_3d(cudaChannelFormatDesc *channel,
                                     make_cudaExtent(extent.x, extent.y, extent.z)));
     }
     return cu_array;
+}
+
+
+
+void cu_free(void *d_arr)
+{
+    gpuErrchk(cudaFree(d_arr));
+    return;
 }

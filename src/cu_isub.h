@@ -11,9 +11,13 @@
 
 extern "C" {
 
-    void DLL_EXPORT cu_isub(void *y, void *x, unsigned long long N,
-                            const int dtype, int dtype_len, bool vec,
-                            cudaStream_t *stream=NULL);
+    void DLL_EXPORT cu_isub_val(void *y, void *x, unsigned long long N,
+                                int dtype, int dtype_len,
+                                cudaStream_t *stream=NULL);
+								
+	void DLL_EXPORT cu_isub_vec(void *y, void *x, unsigned long long N,
+                                int dtype, int dtype_len,
+                                cudaStream_t *stream=NULL);
 
 }
 

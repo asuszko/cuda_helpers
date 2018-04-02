@@ -11,8 +11,8 @@
  */
 CUcontext *cu_context_create(int device)
 {
-    CUcontext *ctx = (CUcontext *) malloc(sizeof(CUcontext));
-
+    CUcontext *ctx = new CUcontext;
+    
     int num_devices = 0;
     gpuErrchk(cudaGetDeviceCount(&num_devices));
     assert(device < num_devices && "Invalid device_id in cu_create_context");
@@ -32,10 +32,10 @@ void cu_context_push(CUcontext *ctx)
 {
     /* Pop the existing context if it exists, then push the new one,
     otherwise, push the context. */
-    CUcontext *tmp_ctx = (CUcontext *)malloc(sizeof(CUcontext));
-    gpuContextErrchk(cuCtxGetCurrent(tmp_ctx));
-    if(*tmp_ctx != NULL) {
-        cu_context_pop(tmp_ctx);
+    CUcontext tmp_ctx;
+    gpuContextErrchk(cuCtxGetCurrent(&tmp_ctx));
+    if(tmp_ctx != NULL) {
+        cu_context_pop(&tmp_ctx);
     }
     gpuContextErrchk(cuCtxPushCurrent(*ctx));
     return;
@@ -58,6 +58,6 @@ void cu_context_pop(CUcontext *ctx)
 void cu_context_destroy(CUcontext *ctx)
 {
     gpuContextErrchk(cuCtxDestroy(*ctx));
-    free(ctx);
+    delete[] ctx;
     return;
 }

@@ -7,7 +7,25 @@
 
 
 template <typename T>
-__global__ void transpose_real(T *data)
+__global__ void transpose_real(T *data, int ncols, int nrows)
+{
+    int index = blockIdx.x * TILE_DIM + threadIdx.x;
+
+    if(index < ncols*nrows) {
+        int iy = index/ncols;
+        int ix = index-iy*ncols;
+        int k = ix+iy*ncols;
+        int idx = k;
+        do { // calculate index in the original array
+            idx = (idx % nrows) * ncols + (idx / nrows);
+        } while(idx < k); // make sure we don't swap elements twice
+        data[k] = data[idx];
+    }
+}
+
+
+template <typename T>
+__global__ void ccc_transpose_real(T *data)
 {
     __shared__ T tile_s[TILE_DIM][TILE_DIM+1];
     __shared__ T tile_d[TILE_DIM][TILE_DIM+1];
@@ -19,7 +37,7 @@ __global__ void transpose_real(T *data)
     if (blockIdx.y > blockIdx.x) { // handle off-diagonal case
         int dx = blockIdx.y * TILE_DIM + threadIdx.x;
         int dy = blockIdx.x * TILE_DIM + threadIdx.y;
-    
+
         for (int j = 0; j < TILE_DIM; j += BLOCK_ROWS) {
             tile_s[threadIdx.y+j][threadIdx.x] = data[(y+j)*width + x];
         }
@@ -60,7 +78,7 @@ __global__ void transpose_complex(T *data)
     if (blockIdx.y > blockIdx.x) { // handle off-diagonal case
         int dx = blockIdx.y * TILE_DIM + threadIdx.x;
         int dy = blockIdx.x * TILE_DIM + threadIdx.y;
-    
+
         for (int j = 0; j < TILE_DIM; j += BLOCK_ROWS) {
             tile_s[threadIdx.y+j][threadIdx.x].x = data[(y+j)*width + x].x;
             tile_s[threadIdx.y+j][threadIdx.x].y = data[(y+j)*width + x].y;
@@ -100,17 +118,17 @@ void cu_transpose(void *dev_ptr, int nrows, int ncols, int dtype_id,
 {
     dim3 blockSize(TILE_DIM, TILE_DIM);
     dim3 gridSize((ncols-1)/TILE_DIM+1, (nrows-1)/TILE_DIM+1);
-    
+
     cudaStream_t stream_id;
     (stream == NULL) ? stream_id = NULL : stream_id = *stream;
 
     switch(dtype_id) {
         case 0: {
-            transpose_real<<<gridSize,blockSize,0,stream_id>>>((float *)dev_ptr);
+            transpose_real<<<gridSize,blockSize,0,stream_id>>>((float *)dev_ptr, ncols, nrows);
             break;
         }
         case 1: {
-            transpose_real<<<gridSize,blockSize,0,stream_id>>>((double *)dev_ptr);
+            transpose_real<<<gridSize,blockSize,0,stream_id>>>((double *)dev_ptr, ncols, nrows);
             break;
         }
         case 2: {

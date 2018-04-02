@@ -64,18 +64,18 @@ void cu_memcpy_d2h_async(void *d_arr,
 }
 
 /**
-*  Copy a chunk of memory from the device to device. This copy can be 
+*  Copy a chunk of memory from the device to device. This copy can be
 *  from one device to another, or to another memory space on the same
 *  device.
-*  @param d_arr_src - [void*] : Pointer to device source memory.
-*  @param d_arr_dst - [void*] : Pointer to device destination memory.
+*  @param d_src - [void*] : Pointer to device source memory.
+*  @param d_dst - [void*] : Pointer to device destination memory.
 *  @param size - [size_t] : Size of the transfer in bytes.
 */
-void cu_memcpy_d2d(void *d_arr_src,
-                   void *d_arr_dst,
+void cu_memcpy_d2d(void *d_src,
+                   void *d_dst,
                    size_t size)
 {
-    gpuErrchk(cudaMemcpy(d_arr_dst, d_arr_src, size, cudaMemcpyDeviceToDevice));
+    gpuErrchk(cudaMemcpy(d_dst, d_src, size, cudaMemcpyDeviceToDevice));
     return;
 }
 
@@ -83,17 +83,17 @@ void cu_memcpy_d2d(void *d_arr_src,
 *  Async copy a chunk of memory from the device to device. This copy can
 *  be from one device to another, or to another memory space on the same
 *  device.
-*  @param d_arr_src - [void*] : Pointer to device source memory.
-*  @param d_arr_dst - [void*] : Pointer to device destination memory.
+*  @param d_src - [void*] : Pointer to device source memory.
+*  @param d_dst - [void*] : Pointer to device destination memory.
 *  @param size - [size_t] : Size of the transfer in bytes.
 *  @param stream - [cudaStream_t*] : CUDA stream
 */
-void cu_memcpy_d2d_async(void *d_arr_src,
-                         void *d_arr_dst,
+void cu_memcpy_d2d_async(void *d_src,
+                         void *d_dst,
                          size_t size,
                          cudaStream_t *stream)
 {
-    gpuErrchk(cudaMemcpyAsync(d_arr_dst, d_arr_src, size, cudaMemcpyDeviceToDevice, *stream));
+    gpuErrchk(cudaMemcpyAsync(d_dst, d_src, size, cudaMemcpyDeviceToDevice, *stream));
     return;
 }
 
@@ -167,7 +167,7 @@ void cu_memunpin(void *h_arr)
 }
 
 /**
-*  Create and return the copyparms3D object that is used by a 
+*  Create and return the copyparms3D object that is used by a
 *  subsequent cudaMemcpy3D call.
 *  @param src_Array - [void*] : Pointer to host memory.
 *  @param dst_Array - [cudaArray*] : Pointer to device cudaArray.

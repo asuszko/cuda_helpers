@@ -3,70 +3,76 @@
 #include "cu_idiv.h"
 #include "cu_errchk.h"
 
+#define BLOCKSIZE 128
 
 template <typename T>
-__global__ void div1_val(T *y, const T *x, unsigned long long N)
+__global__ void div1_val(T *y, const T x, unsigned long long N)
 {
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
-    
+
+    #pragma unroll BLOCKSIZE
     for(; index < N; index += stride) {
-        y[index] /= x[0];
+        y[index] /= x;
     }
 }
 
 
 template <typename T>
-__global__ void div1_vec(T *y, const T *x, unsigned long long N)
+__global__ void div1_vec(T* __restrict__ y, const T* __restrict__ x, unsigned long long N)
 {
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
-    
+
+    #pragma unroll BLOCKSIZE
     for(; index < N; index += stride) {
         y[index] /= x[index];
-    }     
+    }
 }
 
 
 template <typename T>
-__global__ void div2_val(T *y, const T *x, unsigned long long N)
+__global__ void div2_val(T* __restrict__ y, const T x, unsigned long long N)
 {
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
-    
+
+    #pragma unroll BLOCKSIZE
     for(; index < N; index += stride) {
         T valy = y[index];
-        T valx = x[0];
-        
-        y[index].x = (valy.x*valx.x+valy.y*valx.y)/(valx.x*valx.x+valx.y*valx.y);
-        y[index].y = (valy.y*valx.x-valy.x*valx.y)/(valx.x*valx.x+valx.y*valx.y);
-    }     
+
+        auto mag = x.x*x.x+x.y*x.y;
+        y[index].x = (valy.x*x.x+valy.y*x.y)/mag;
+        y[index].y = (valy.y*x.x-valy.x*x.y)/mag;
+    }
 }
 
 
 template <typename T>
-__global__ void div2_vec(T *y, const T *x, unsigned long long N)
+__global__ void div2_vec(T* __restrict__ y, const T* __restrict__ x, unsigned long long N)
 {
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
-    
+
+    #pragma unroll BLOCKSIZE
     for(; index < N; index += stride) {
         T valy = y[index];
         T valx = x[index];
-        
-        y[index].x = (valy.x*valx.x+valy.y*valx.y)/(valx.x*valx.x+valx.y*valx.y);
-        y[index].y = (valy.y*valx.x-valy.x*valx.y)/(valx.x*valx.x+valx.y*valx.y);
-    }     
+
+        auto mag = valx.x*valx.x+valx.y*valx.y;
+        y[index].x = (valy.x*valx.x+valy.y*valx.y)/mag;
+        y[index].y = (valy.y*valx.x-valy.x*valx.y)/mag;
+    }
 }
 
 
-void cu_idiv(void *y, void *x, unsigned long long N,
-             const int dtype, int dtype_len, bool vec,
-             cudaStream_t *stream)
+void cu_idiv_vec(void *y, void *x, unsigned long long N,
+                 int dtype, int dtype_len,
+                 cudaStream_t *stream)
 {
-    dim3 blockSize(256);
+    dim3 blockSize(BLOCKSIZE);
     dim3 gridSize((((N-1)/blockSize.x+1)-1)/blockSize.x+1);
-    
+
     cudaStream_t stream_id;
     (stream == NULL) ? stream_id = NULL : stream_id = *stream;
 
@@ -74,24 +80,63 @@ void cu_idiv(void *y, void *x, unsigned long long N,
         case 0:
             switch(dtype_len) {
                 case 1:
-                    if (vec) div1_vec<<<gridSize,blockSize,0,stream_id>>>((float*)y, (const float*)x, N);
-                    else     div1_val<<<gridSize,blockSize,0,stream_id>>>((float*)y, (const float*)x, N);
+                    div1_vec<<<gridSize,blockSize,0,stream_id>>>(static_cast<float*>(y),
+                                                                 static_cast<const float*>(x), N);
                     break;
                 case 2:
-                    if (vec) div2_vec<<<gridSize,blockSize,0,stream_id>>>((float2*)y,(const float2*)x,N);
-                    else     div2_val<<<gridSize,blockSize,0,stream_id>>>((float2*)y,(const float2*)x,N);
+                    div2_vec<<<gridSize,blockSize,0,stream_id>>>(static_cast<float2*>(y),
+                                                                 static_cast<const float2*>(x), N);
                     break;
             }
             break;
         case 1:
             switch(dtype_len) {
                 case 1:
-                    if (vec) div1_vec<<<gridSize,blockSize,0,stream_id>>>((double*)y, (const double*)x, N);
-                    else     div1_val<<<gridSize,blockSize,0,stream_id>>>((double*)y, (const double*)x, N);
+                    div1_vec<<<gridSize,blockSize,0,stream_id>>>(static_cast<double*>(y),
+                                                                 static_cast<const double*>(x), N);
                     break;
                 case 2:
-                    if (vec) div2_vec<<<gridSize,blockSize,0,stream_id>>>((double2*)y,(const double2*)x,N);
-                    else     div2_val<<<gridSize,blockSize,0,stream_id>>>((double2*)y,(const double2*)x,N);
+                    div2_vec<<<gridSize,blockSize,0,stream_id>>>(static_cast<double2*>(y),
+                                                                 static_cast<const double2*>(x), N);
+                    break;
+            }
+            break;
+    }
+}
+
+
+void cu_idiv_val(void *y, void *x, unsigned long long N,
+                 int dtype, int dtype_len,
+                 cudaStream_t *stream)
+{
+    dim3 blockSize(BLOCKSIZE);
+    dim3 gridSize((((N-1)/blockSize.x+1)-1)/blockSize.x+1);
+
+    cudaStream_t stream_id;
+    (stream == NULL) ? stream_id = NULL : stream_id = *stream;
+
+    switch(dtype) {
+        case 0:
+            switch(dtype_len) {
+                case 1:
+                    div1_val<<<gridSize,blockSize,0,stream_id>>>(static_cast<float*>(y),
+                                                                (static_cast<const float*>(x))[0], N);
+                    break;
+                case 2:
+                    div2_val<<<gridSize,blockSize,0,stream_id>>>(static_cast<float2*>(y),
+                                                                (static_cast<const float2*>(x))[0], N);
+                    break;
+            }
+            break;
+        case 1:
+            switch(dtype_len) {
+                case 1:
+                    div1_val<<<gridSize,blockSize,0,stream_id>>>(static_cast<double*>(y),
+                                                                (static_cast<const double*>(x))[0], N);
+                    break;
+                case 2:
+                    div2_val<<<gridSize,blockSize,0,stream_id>>>(static_cast<double2*>(y),
+                                                                (static_cast<const double2*>(x))[0], N);
                     break;
             }
             break;

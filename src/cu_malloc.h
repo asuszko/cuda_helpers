@@ -16,6 +16,8 @@ extern "C" {
                                        bool layered);
 
     void DLL_EXPORT *cu_malloc_managed(size_t size);
+    
+    void DLL_EXPORT cu_free(void *d_arr);
 
 }
 

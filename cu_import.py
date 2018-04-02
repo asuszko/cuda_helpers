@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 __all__ = [
+    "cu_conj",
     "cu_context_create",
     "cu_context_destroy",
     "cu_context_pop",
@@ -12,11 +13,16 @@ __all__ = [
     "cu_device_count",
     "cu_device_props",
     "cu_device_reset",
+    "cu_free",
     "cu_get_mem_info",
-    "cu_iadd",
-    "cu_idiv",
-    "cu_imul",
-    "cu_isub",
+    "cu_iadd_val",
+    "cu_iadd_vec",
+    "cu_idiv_val",
+    "cu_idiv_vec",
+    "cu_imul_val",
+    "cu_imul_vec",
+    "cu_isub_val",
+    "cu_isub_vec",
     "cu_malloc",
     "cu_malloc_3d",
     "cu_malloc_managed",
@@ -58,34 +64,69 @@ cu_lib = load_lib(lib_path,"cuda")
 
 # Define argtypes for all functions to import
 argtype_defs = {
+        
+    "cu_conj" :                  [c_void_p,         #Vector take take conj of
+                                  c_int,            #Length of vector
+                                  c_int,            #Data type identifier
+                                  c_void_p],        #CUDA stream
 
-    "cu_iadd" :                  [c_void_p,         #Vector y to add onto
+    "cu_free" :                  [c_void_p],        #Pointer to device array
+
+    "cu_iadd_val" :              [c_void_p,         #Vector y to add onto
+                                  ndpointer(),      #Scalar to add
+                                  c_int,            #Length of vector y
+                                  c_int,            #Data type identifier     
+                                  c_int,            #Data type depth
+                                  c_void_p],        #CUDA stream
+
+    "cu_iadd_vec" :              [c_void_p,         #Vector y to add onto
                                   c_void_p,         #Vector x to add
                                   c_int,            #Length of vector y
                                   c_int,            #Data type identifier     
                                   c_int,            #Data type depth
-                                  c_bool],          #Vector flag
+                                  c_void_p],        #CUDA stream
 
-    "cu_idiv" :                  [c_void_p,         #Vector y to divide onto
+    "cu_idiv_val" :              [c_void_p,         #Vector y to divide onto
+                                  ndpointer(),      #Scalar to divide
+                                  c_int,            #Length of vector y
+                                  c_int,            #Data type identifier     
+                                  c_int,            #Data type depth
+                                  c_void_p],        #CUDA stream
+
+    "cu_idiv_vec" :              [c_void_p,         #Vector y to divide onto
                                   c_void_p,         #Vector x to divide
                                   c_int,            #Length of vector y
                                   c_int,            #Data type identifier     
                                   c_int,            #Data type depth
-                                  c_bool],          #Vector flag
+                                  c_void_p],        #CUDA stream
 
-    "cu_imul" :                  [c_void_p,         #Vector y to multiply onto
+    "cu_imul_val" :              [c_void_p,         #Vector y to multiply onto
+                                  ndpointer(),      #Scalar to multiply
+                                  c_int,            #Length of vector y
+                                  c_int,            #Data type identifier     
+                                  c_int,            #Data type depth
+                                  c_void_p],        #CUDA stream
+
+    "cu_imul_vec" :              [c_void_p,         #Vector y to multiply onto
                                   c_void_p,         #Vector x to multiply
                                   c_int,            #Length of vector y
                                   c_int,            #Data type identifier     
                                   c_int,            #Data type depth
-                                  c_bool],          #Vector flag
+                                  c_void_p],        #CUDA stream
 
-    "cu_isub" :                  [c_void_p,         #Vector y to subtract onto
+    "cu_isub_val" :              [c_void_p,         #Vector y to subtract onto
+                                  ndpointer(),      #Scalar to subtract
+                                  c_int,            #Length of vector y
+                                  c_int,            #Data type identifier     
+                                  c_int,            #Data type depth
+                                  c_void_p],        #CUDA stream
+
+    "cu_isub_vec" :              [c_void_p,         #Vector y to subtract onto
                                   c_void_p,         #Vector x to subtract
                                   c_int,            #Length of vector y
                                   c_int,            #Data type identifier     
                                   c_int,            #Data type depth
-                                  c_bool],          #Vector flag
+                                  c_void_p],        #CUDA stream
         
     "cu_context_create" :       [c_int],            #CUDA device id
       
