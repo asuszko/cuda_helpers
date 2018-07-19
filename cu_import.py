@@ -15,15 +15,18 @@ __all__ = [
     "cu_device_reset",
     "cu_free",
     "cu_get_mem_info",
+    "cu_iabs",
     "cu_iadd_val",
     "cu_iadd_vec",
     "cu_idiv_val",
     "cu_idiv_vec",
     "cu_imul_val",
     "cu_imul_vec",
+    "cu_ipow",
     "cu_isub_val",
     "cu_isub_vec",
     "cu_malloc",
+    "cu_malloc_dblptr",
     "cu_malloc_3d",
     "cu_malloc_managed",
     "cu_memcpy_d2d",
@@ -79,6 +82,12 @@ argtype_defs = {
                                   c_int,            #Data type depth
                                   c_void_p],        #CUDA stream
 
+    "cu_iabs" :                  [c_void_p,         #Vector y to take absolute value of
+                                  c_int,            #Length of vector y
+                                  c_int,            #Data type identifier     
+                                  c_int,            #Data type depth
+                                  c_void_p],        #CUDA stream
+
     "cu_iadd_vec" :              [c_void_p,         #Vector y to add onto
                                   c_void_p,         #Vector x to add
                                   c_int,            #Length of vector y
@@ -112,6 +121,12 @@ argtype_defs = {
                                   c_int,            #Length of vector y
                                   c_int,            #Data type identifier     
                                   c_int,            #Data type depth
+                                  c_void_p],        #CUDA stream
+
+    "cu_ipow" :                  [c_void_p,         #Vector y to take power of
+                                  c_int,            #Length of vector y
+                                  c_int,            #Power
+                                  c_int,            #Data type identifier     
                                   c_void_p],        #CUDA stream
 
     "cu_isub_val" :              [c_void_p,         #Vector y to subtract onto
@@ -157,6 +172,11 @@ argtype_defs = {
                                  ndpointer()],      #Total memory in bytes
                             
     "cu_malloc" :               [c_size_t],         #Size in bytes
+    
+    "cu_malloc_dblptr" :        [c_void_p,          #Device pointer to array
+                                 c_int,             #Size of each matrix in batch
+                                 c_int,             #Batch size
+                                 c_int],            #Data type identifier 
     
     "cu_malloc_3d" :            [POINTER(channelDesc), #Pointer to the CUDA channel object
                                  ndpointer("i4"),      #Int array [x,y,z]
@@ -242,6 +262,7 @@ restype_defs = {
     "cu_device_count" :         c_int,              #Number of CUDA devices
     "cu_device_props":          deviceProps,        #CUDA device props object
     "cu_malloc" :               c_void_p,           #Pointer to device memory
+    "cu_malloc_dblptr" :        c_void_p,           #Pointer to device memory
     "cu_malloc_3d" :            c_void_p,           #Pointer to device CUDA array
     "cu_malloc_managed" :       c_void_p,           #Pointer to host+dev managed memory
     "cu_stream_create" :        c_void_p,           #Pointer to CUDA stream

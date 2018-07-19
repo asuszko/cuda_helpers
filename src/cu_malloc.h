@@ -10,6 +10,11 @@
 extern "C" {
 
     void DLL_EXPORT *cu_malloc(size_t size);
+    
+    void DLL_EXPORT **cu_malloc_dblptr(void *A_dflat, 
+                                       unsigned long long N,
+                                       int batch_size,
+                                       int dtype);
 
     cudaArray DLL_EXPORT *cu_malloc_3d(cudaChannelFormatDesc *channel,
                                        dim3 extent,

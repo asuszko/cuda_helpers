@@ -14,6 +14,64 @@ void *cu_malloc(size_t size)
     return d_arr;
 }
 
+#include <iostream>
+using namespace std;
+
+/**
+*  Allocate memory on the device.
+*  @param int - [n] : Batch count or number of pointers to allocate.
+*/
+void **cu_malloc_dblptr(void *A_dflat, unsigned long long N, int batch_size, int dtype)
+{
+    void **A_d;
+    gpuErrchk(cudaMalloc((void**)&A_d,batch_size*sizeof(size_t)));
+
+    switch(dtype) {
+        case 0: 
+        {
+            float **A = (float **)malloc(batch_size*sizeof(float*));
+            A[0] = static_cast<float*>(A_dflat);
+            for (int i = 1; i < batch_size; i++) {
+                A[i] = A[i-1]+N;
+            }
+            gpuErrchk(cudaMemcpy(A_d,A,batch_size*sizeof(float*),cudaMemcpyHostToDevice));
+            break;
+        }
+        case 1: 
+        {
+            double **A = (double **)malloc(batch_size*sizeof(double*));
+            A[0] = static_cast<double*>(A_dflat);
+            for (int i = 1; i < batch_size; i++) {
+                A[i] = A[i-1]+N;
+            }
+            gpuErrchk(cudaMemcpy(A_d,A,batch_size*sizeof(double*),cudaMemcpyHostToDevice));
+            break;
+        }
+        case 2: 
+        {
+            float2 **A = (float2 **)malloc(batch_size*sizeof(float2*));
+            A[0] = static_cast<float2*>(A_dflat);
+            for (int i = 1; i < batch_size; i++) {
+                A[i] = A[i-1]+N;
+            }
+            gpuErrchk(cudaMemcpy(A_d,A,batch_size*sizeof(float2*),cudaMemcpyHostToDevice));
+            break;
+        }
+        case 3: 
+        {
+            double2 **A = (double2 **)malloc(batch_size*sizeof(double2*));
+            A[0] = static_cast<double2*>(A_dflat);
+            for (int i = 1; i < batch_size; i++) {
+                A[i] = A[i-1]+N;
+            }
+            gpuErrchk(cudaMemcpy(A_d,A,batch_size*sizeof(double2*),cudaMemcpyHostToDevice));
+            break;
+        }
+    }
+     
+    return A_d;
+}
+
 
 /**
 *  Allocate mananged memory on the host and device. CUDA will link
