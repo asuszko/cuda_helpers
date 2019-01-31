@@ -4,6 +4,7 @@
 #include "cu_errchk.h"
 
 #define BLOCKSIZE 128
+const int bs = BLOCKSIZE;
 
 
 template <typename T>
@@ -12,7 +13,7 @@ __global__ void add1_val(T* __restrict__ y, const T x, unsigned long long N)
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         y[index] += x;
     }
@@ -25,7 +26,7 @@ __global__ void add1_vec(T* __restrict__ y, const T* __restrict__ x, unsigned lo
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         y[index] += x[index];
     }
@@ -38,7 +39,7 @@ __global__ void add2_val(T* __restrict__ y, const T x, unsigned long long N)
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         T valy = y[index];
 
@@ -56,7 +57,7 @@ __global__ void add2_vec(T* __restrict__ y, const T* __restrict__ x, unsigned lo
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         T valy = y[index];
         T valx = x[index];
@@ -75,7 +76,7 @@ __global__ void add3_val(T* __restrict__ y, const T x, unsigned long long N)
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         T valy = y[index];
 
@@ -94,7 +95,7 @@ __global__ void add3_vec(T* __restrict__ y, const T* __restrict__ x, unsigned lo
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         T valy = y[index];
         T valx = x[index];
@@ -114,7 +115,7 @@ __global__ void add4_val(T* __restrict__ y, const T x, unsigned long long N)
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         T valy = y[index];
 
@@ -134,7 +135,7 @@ __global__ void add4_vec(T* __restrict__ y, const T* __restrict__ x, unsigned lo
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         T valy = y[index];
         T valx = x[index];

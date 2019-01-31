@@ -4,6 +4,7 @@
 #include "cu_errchk.h"
 
 #define BLOCKSIZE 128
+const int bs = BLOCKSIZE;
 
 template<typename T>
 __global__ void complex_conj(T *odata, const unsigned long long N)
@@ -11,7 +12,7 @@ __global__ void complex_conj(T *odata, const unsigned long long N)
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
     
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         odata[index].y *= -1.;
     }

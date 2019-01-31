@@ -4,6 +4,7 @@
 #include "cu_errchk.h"
 
 #define BLOCKSIZE 128
+const int bs = 128;
 
 
 template <typename T, typename U>
@@ -12,7 +13,7 @@ __global__ void abs2(T* __restrict__ y, const U* __restrict__ x, unsigned long l
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         U val = x[index];
         y[index] = sqrt(val.x*val.x+val.y*val.y);
@@ -26,7 +27,7 @@ __global__ void iabs2(T* __restrict__ y, unsigned long long N)
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
 
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         T val = y[index];
         y[index].x = sqrt(val.x*val.x+val.y*val.y);

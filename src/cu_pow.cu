@@ -4,6 +4,7 @@
 #include "cu_errchk.h"
 
 #define BLOCKSIZE 128
+const int bs = 128;
 
 
 template <typename T>
@@ -12,7 +13,7 @@ __global__ void ipowR(T* __restrict__ y, const T b, unsigned long long N)
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
     
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
         y[index] = pow(y[index], b);
     }
@@ -25,11 +26,16 @@ __global__ void ipowC(T* __restrict__ y, const U b, unsigned long long N)
     unsigned long long index = blockIdx.x * blockDim.x + threadIdx.x;
     unsigned long long stride = gridDim.x * blockDim.x;
     
-    #pragma unroll BLOCKSIZE
+    #pragma unroll bs
     for(; index < N; index += stride) {
-        T val = y[index];
-        y[index].x = val.x*val.x-val.y*val.y;
-        y[index].y = (U)2*val.x*val.y;
+        T vals = y[index];
+        U real = vals.x;
+        U imag = vals.y;
+        for(int i = 2; i <= b; ++i) {
+            T val = y[index];
+            y[index].x = val.x*real-val.y*imag;
+            y[index].y = 2.*val.x*imag;
+        }    
     }
 }
 

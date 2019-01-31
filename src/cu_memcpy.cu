@@ -13,7 +13,7 @@ void cu_memcpy_h2d(void *d_arr,
                    void *h_arr,
                    size_t size)
 {
-    gpuErrchk(cudaMemcpy(d_arr, h_arr, size, cudaMemcpyHostToDevice));
+    gpuErrchk(cudaMemcpy((void**)d_arr, h_arr, size, cudaMemcpyHostToDevice));
     return;
 }
 
@@ -29,7 +29,7 @@ void cu_memcpy_h2d_async(void *d_arr,
                          size_t size,
                          cudaStream_t *stream)
 {
-    gpuErrchk(cudaMemcpyAsync(d_arr, h_arr, size, cudaMemcpyHostToDevice, *stream));
+    gpuErrchk(cudaMemcpyAsync((void**)d_arr, h_arr, size, cudaMemcpyHostToDevice, *stream));
     return;
 }
 

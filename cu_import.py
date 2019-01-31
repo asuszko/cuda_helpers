@@ -125,7 +125,7 @@ argtype_defs = {
 
     "cu_ipow" :                  [c_void_p,         #Vector y to take power of
                                   c_int,            #Length of vector y
-                                  c_int,            #Power
+                                  ndpointer(),      #Power
                                   c_int,            #Data type identifier     
                                   c_void_p],        #CUDA stream
 

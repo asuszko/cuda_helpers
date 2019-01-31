@@ -3,6 +3,8 @@
 #include "cu_errchk.h"
 #include "cu_ctx.h"
 
+#include <iostream>
+using namespace std;
 
 /**
  *  Initialize a CUDA context on a device.

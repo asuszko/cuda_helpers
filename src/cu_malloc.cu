@@ -14,9 +14,6 @@ void *cu_malloc(size_t size)
     return d_arr;
 }
 
-#include <iostream>
-using namespace std;
-
 /**
 *  Allocate memory on the device.
 *  @param int - [n] : Batch count or number of pointers to allocate.
