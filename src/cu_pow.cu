@@ -43,7 +43,7 @@ __global__ void ipowC(T* __restrict__ y, const U b, unsigned long long N)
 void cu_ipow(void *x, unsigned long long N, void *b,
              int dtype, cudaStream_t *stream)
 {
-    dim3 blockSize(BLOCKSIZE);
+    dim3 blockSize(bs);
     dim3 gridSize((((N-1)/blockSize.x+1)-1)/blockSize.x+1);
     
     cudaStream_t stream_id;

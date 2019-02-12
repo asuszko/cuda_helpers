@@ -4,7 +4,7 @@
 #include "cu_errchk.h"
 
 #define BLOCKSIZE 128
-const int bs = BLOCKSIZE;
+const int bs = 128;
 
 template <typename T>
 __global__ void mul1_val(T* __restrict__ y, const T x, unsigned long long N)
@@ -71,7 +71,7 @@ void cu_imul_vec(void *y, void *x, unsigned long long N,
                  int dtype, int dtype_len,
                  cudaStream_t *stream)
 {
-    dim3 blockSize(BLOCKSIZE);
+    dim3 blockSize(bs);
     dim3 gridSize((((N-1)/blockSize.x+1)-1)/blockSize.x+1);
     
     cudaStream_t stream_id;
@@ -110,7 +110,7 @@ void cu_imul_val(void *y, void *x, unsigned long long N,
                  int dtype, int dtype_len,
                  cudaStream_t *stream)
 {
-    dim3 blockSize(BLOCKSIZE);
+    dim3 blockSize(bs);
     dim3 gridSize((((N-1)/blockSize.x+1)-1)/blockSize.x+1);
     
     cudaStream_t stream_id;

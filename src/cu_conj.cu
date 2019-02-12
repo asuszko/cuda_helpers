@@ -4,7 +4,7 @@
 #include "cu_errchk.h"
 
 #define BLOCKSIZE 128
-const int bs = BLOCKSIZE;
+const int bs = 128;
 
 template<typename T>
 __global__ void complex_conj(T *odata, const unsigned long long N)
@@ -24,7 +24,7 @@ void cu_conj(void *d_data,
              const int dtype,
              cudaStream_t *stream)
 {
-    dim3 blockSize(BLOCKSIZE);
+    dim3 blockSize(bs);
     dim3 gridSize((((N-1)/blockSize.x+1)-1)/blockSize.x+1);
     
     cudaStream_t stream_id;
